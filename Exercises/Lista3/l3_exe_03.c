@@ -46,11 +46,11 @@ int verifica_repeticao(int valores[], int z,int chave)
 
     if(repetido)
     {
-        return false;
+        return 0;
     }
     else
     {
-        return true;
+        return 1;
     }
 }
 
@@ -110,6 +110,64 @@ int verify_colunas(int matriz[9][9])
     return verify_c;
 }
 
+//Verfica se os quadrados 3x3 sao válidos
+int verify_3x3(int matriz[9][9])
+{
+    bool rep = true;
+    int linha = 0, coluna = 0, li = 0, lf = 2, ci = 0, cf = 2;
+    int repeticao[] = {0,0,0,0,0,0,0,0,0};
+    int index = 0;
+    while(rep)
+    {
+        printf("linha: %d, coluna: %d\n", linha, coluna);
+        if((linha == 3 || linha == 6 || linha == 9) && (coluna == 3 || coluna == 6))
+        {
+            ci = coluna;
+            cf = ci + 2;
+            index = 0;
+            for(int i = 0; i < 9; i ++)
+                repeticao[i] = 0;
+            
+            printf("ci: %d\ncf: %d\nindex: %d\n", ci, cf, index);
+        }
+        else if ((linha == 3 || linha == 6) && coluna == 9)
+        {
+            li = linha;
+            lf = li + 2;
+            ci = 0;
+            cf = ci + 2;
+            index = 0;
+            for(int i = 0; i < 9; i ++)
+                repeticao[i] = 0;
+            
+            printf("ci: %d\ncf: %d\nindex: %d\n", ci, cf, index);
+        }
+        else if (linha == 9 && coluna == 9)
+        {
+            rep = false;
+            break;
+        }
+        for(linha = li; linha <= lf; linha++)
+        {
+            for(coluna = ci; coluna <= cf; coluna ++)
+            {
+                if(busca_binaria_padrao(matriz[linha][coluna]) && verifica_repeticao(repeticao, 9, matriz[linha][coluna]))
+                {
+                    printf("[index: %d] verify quadrado(linha: %d, coluna: %d): true\n", index, linha, coluna);
+                    repeticao[index] = matriz[linha][coluna];
+                    index += 1;
+                }
+                else
+                {
+                    printf("[index: %d] verify quadrado(linha: %d, coluna: %d): false\n", index, linha, coluna);
+                    return 0;
+                }
+            }
+        }
+    }
+    return 1;
+}
+
 int main()
 {
     int sudoku[9][9];
@@ -124,7 +182,7 @@ int main()
     
 
     //Verificando se é válida
-    if(verify_colunas(sudoku) && verify_linhas(sudoku))
+    if(verify_colunas(sudoku) && verify_linhas(sudoku) && verify_3x3(sudoku))
     {
         printf("CORRETO!");
     }
@@ -133,5 +191,5 @@ int main()
         printf("INCORRETO!");
     }
 
-    return 1;
+    return 0;
 }

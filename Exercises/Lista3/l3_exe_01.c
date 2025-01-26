@@ -97,7 +97,7 @@ int main()
     }
     else
     {
-        printf("A chave está na posiçao: %d", (busca_binaria(valores, n, chave) + 1));
+        printf("A chave está na posiçao: %d\n", (busca_binaria(valores, n, chave) + 1));
     }
 
     return 0;
